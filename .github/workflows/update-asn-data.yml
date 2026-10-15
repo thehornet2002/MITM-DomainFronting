@@ -1,0 +1,32 @@
+name: Update ASN IP Database
+
+on:
+  schedule:
+    - cron: '0 3 * * 0' # Every Sunday at 03:00 UTC
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  update-asn:
+    name: Refresh ASN Prefixes from RIPEstat
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Run ASN Fetcher
+        run: python scripts/build_asn_database.py
+
+      - name: Commit & Push changes
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore(data): automated weekly ASN IP prefix database refresh"
+          file_pattern: "data/asn_catalog.json"

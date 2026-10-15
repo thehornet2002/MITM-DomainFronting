@@ -1,1 +1,13 @@
 /.idea
+__pycache__/
+*.pyc
+.venv/
+active_config.json
+bin/
+*.zip
+*.sha256
+dist/
+settings.json
+data/asn_cache.json
+mycert.crt
+mycert.key
